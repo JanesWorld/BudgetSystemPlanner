@@ -1,38 +1,64 @@
+:root {
+  --background-color: #fbfafe;
+  --text-color: #1c1a27;
+  --button-bg-color: #7d5260;
+  --button-text-color: white;
+  --button-bg-color-hover: #b3261e;
+}
+
+[data-theme="dark"] {
+  --background-color: #1c1a27;
+  --text-color: #fbfafe;
+  --button-bg-color: #f2b8b5;
+  --button-bg-color-hover: #973c41;
+  --button-text-color: white;
+}
+
 .App {
-  text-align: center;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  margin-bottom: 2rem;
+  /* Add any other App-wide styles here */
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.header {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  /* Define other header styles as needed */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.mainPage {
+  background-color: var(--background-color);
+  color: var(--text-color);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  justify-content: space-between;
+  margin-bottom: "20px";
 }
 
-.App-link {
-  color: #61dafb;
+.button {
+  background-color: var(--button-bg-color);
+  color: var(--button-text-color);
+  border-radius: 25px;
+  width: "170px";
+  height: "40px";
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bolder;
+  text-transform: uppercase;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  &:hover {
+    background-color: var(--button-bg-color-hover);
+    box-shadow: 0px 4px 5px -2px rgba(0, 0, 0, 0.2),
+      0px 7px 10px 1px rgba(0, 0, 0, 0.14), 0px 2px 16px 1px rgba(0, 0, 0, 0.12);
+  }
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.budget {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
