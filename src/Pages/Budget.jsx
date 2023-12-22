@@ -24,7 +24,7 @@ const Budget = () => {
     sessionStorage.setItem("income", income);
     sessionStorage.setItem("expenses", JSON.stringify(expenses));
     console.log("BudgetExpenses", { income, expenses });
-    navigate("/result", { state: { jarsAllocation } });
+    navigate("/result", { state: { jarsAllocation, income, expenses } });
   };
 
   return (
@@ -55,9 +55,7 @@ const Budget = () => {
 
           {expenseOption === "Manual" && (
             <Grid item xs={12} md={6}>
-              <ManualExpenseInput
-                onExpensesInput={(newExpenses) => setExpenses(newExpenses)}
-              />
+              <ManualExpenseInput onExpensesInput={setExpenses} />
             </Grid>
           )}
         </Grid>
