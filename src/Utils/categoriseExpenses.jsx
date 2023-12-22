@@ -1,4 +1,8 @@
-export const categorizeExpenses = (expenses, income) => {
+export const categorizeExpenses = (expenses) => {
+  if (!expenses) {
+    return {};
+  }
+
   const categoryMapping = {
     necessities: ["rent", "bills", "groceries", "transportation"],
     financialFreedom: ["debt", "investments"],
@@ -8,7 +12,7 @@ export const categorizeExpenses = (expenses, income) => {
     give: ["charity"],
   };
 
-  const categorisedExpenses = {
+  const categorizedExpenses = {
     necessities: 0,
     financialFreedom: 0,
     longTermSavings: 0,
@@ -17,20 +21,16 @@ export const categorizeExpenses = (expenses, income) => {
     give: 0,
   };
 
-  Object.keys(expenses).forEach((expenseName) => {
-    for (const [category, items] of Object.entries(categoryMapping)) {
-      if (items.includes(expenseName.toLowerCase())) {
-        categorisedExpenses[category] += parseFloat(expenses[expenseName]);
+  Object.entries(expenses).forEach(([key, value]) => {
+    Object.entries(categoryMapping).forEach(([category, items]) => {
+      if (items.includes(key)) {
+        const numericValue = parseFloat(value) || 0;
+        categorizedExpenses[category] += numericValue;
+        console.log(`Adding ${numericValue} to ${category} for ${key}`);
       }
-    }
+    });
   });
 
-  const percentages = {};
-  Object.keys(categorisedExpenses).forEach((category) => {
-    percentages[category] = (
-      (categorisedExpenses[category] / income) *
-      100
-    ).toFixed(2);
-  });
-  return percentages;
+  console.log("Categorized Expenses:", categorizedExpenses);
+  return categorizedExpenses;
 };
