@@ -5,8 +5,10 @@ const BudgetSystemSelector = ({ onBudgetSystemChange }) => {
   const [selectedBudget, setSelectedBudget] = useState("JARS");
 
   const handleBudgetSystem = (event) => {
-    setSelectedBudget(event.target.value);
-    onBudgetSystemChange(event.target.value);
+    const system = event.target.value;
+    setSelectedBudget(system);
+    onBudgetSystemChange(system);
+    console.log(system);
   };
 
   return (
@@ -20,8 +22,8 @@ const BudgetSystemSelector = ({ onBudgetSystemChange }) => {
           fullWidth
         >
           <MenuItem value="JARS">JARS System</MenuItem>
-          <MenuItem value="503020">50/30/20</MenuItem>
-          <MenuItem value="Zero">Zero Budget</MenuItem>
+          <MenuItem value="503020">50/30/20 System</MenuItem>
+          <MenuItem value="Zero">Zero-Based Budget</MenuItem>
         </Select>
       </FormControl>
     </>
