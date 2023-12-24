@@ -1,36 +1,41 @@
-export const categorizeExpenses = (expenses) => {
+export const categorizeExpenses = (expenses, budgetMethod) => {
   if (!expenses) {
     return {};
   }
 
-  const categoryMapping = {
-    necessities: ["rent", "bills", "groceries", "transportation"],
-    financialFreedom: ["debt", "investments"],
-    longTermSavings: ["savings"],
-    education: ["education"],
-    play: ["entertainment", "social", "hobbies"],
-    give: ["charity"],
-  };
+  let categoryMapping;
+  if (budgetMethod === "503020") {
+    categoryMapping = {
+      Needs: ["rent", "bills", "groceries", "transportation"],
+      Wants: ["entertainment", "social", "hobbies"],
+      Savings: ["savings", "debt", "investments", "education", "charity"],
+    };
+  } else {
+    categoryMapping = {
+      Necessities: ["rent", "bills", "groceries", "transportation"],
+      FinancialFreedom: ["debt", "investments"],
+      LongTermSavings: ["savings"],
+      Education: ["education"],
+      Play: ["entertainment", "social", "hobbies"],
+      Give: ["charity"],
+    };
+  }
 
-  const categorizedExpenses = {
-    necessities: 0,
-    financialFreedom: 0,
-    longTermSavings: 0,
-    education: 0,
-    play: 0,
-    give: 0,
-  };
+  let categorizedExpenses = {};
+  for (const category in categoryMapping) {
+    categorizedExpenses[category] = 0;
+  }
 
-  Object.entries(expenses).forEach(([key, value]) => {
-    Object.entries(categoryMapping).forEach(([category, items]) => {
+  for (const [key, value] of Object.entries(expenses)) {
+    for (const [category, items] of Object.entries(categoryMapping)) {
       if (items.includes(key)) {
         const numericValue = parseFloat(value) || 0;
         categorizedExpenses[category] += numericValue;
-        console.log(`Adding ${numericValue} to ${category} for ${key}`);
       }
-    });
-  });
+    }
+  }
 
-  console.log("Categorized Expenses:", categorizedExpenses);
+  console.log("Categorized User Expenses:", categorizedExpenses);
+
   return categorizedExpenses;
 };
