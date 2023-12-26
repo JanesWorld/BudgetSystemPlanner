@@ -9,12 +9,16 @@ const ExpenseOption = ({ onOptionChange }) => {
   };
   return (
     <>
-      <h5>Add Expenses</h5>
+      <h5 style={{ color: "var(--text-color)" }}>Add Expenses</h5>
       <FormControl sx={{ width: "30%" }}>
         <Select
           value={expenseOption}
           onChange={handleExpenseOptionChange}
           variant="outlined"
+          sx={{
+            backgroundColor: "var(--select-background-color)",
+            color: "var(--text-color)",
+          }}
         >
           <MenuItem value="Automated">No</MenuItem>
           <MenuItem value="Manual">Yes</MenuItem>

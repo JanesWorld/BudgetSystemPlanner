@@ -7,11 +7,11 @@ export const KeySystem = () => {
         display: "flex",
         alignItems: "center",
         p: 2,
-        backgroundColor: "#f5f5f5",
+        backgroundColor: "var(--key-bg-color)",
         borderRadius: "8px",
         marginBottom: 2,
         marginTop: 2,
-        width: "30%",
+        width: "40%",
       }}
     >
       <Box sx={{ display: "flex", alignItems: "center", marginRight: 4 }}>
@@ -23,7 +23,12 @@ export const KeySystem = () => {
             marginRight: 1,
           }}
         />
-        <Typography variant="body2">JARS System</Typography>
+        <Typography
+          variant="body2"
+          sx={{ color: "var(--text-subtitle-color)" }}
+        >
+          JARS System
+        </Typography>
       </Box>
       <Box sx={{ display: "flex", alignItems: "center" }}>
         <Box
@@ -34,7 +39,20 @@ export const KeySystem = () => {
             marginRight: 1,
           }}
         />
-        <Typography variant="body2">Your Budget</Typography>
+        <Typography
+          variant="body2"
+          sx={{ color: "var(--text-subtitle-color)" }}
+        >
+          Your Budget
+        </Typography>
+      </Box>
+      <Box sx={{ display: "flex", alignItems: "center", marginLeft: 4 }}>
+        <Typography
+          variant="body2"
+          sx={{ color: "var(--text-subtitle-color)" }}
+        >
+          (£x) Overbudget
+        </Typography>
       </Box>
     </Box>
   );

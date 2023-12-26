@@ -13,17 +13,20 @@ const BudgetSystemSelector = ({ onBudgetSystemChange }) => {
 
   return (
     <>
-      <h5>Select Budget System</h5>
+      <h5 style={{ color: "var(--text-color)" }}>Select Budget System</h5>
       <FormControl sx={{ width: "30%" }}>
         <Select
           value={selectedBudget}
           onChange={handleBudgetSystem}
           variant="outlined"
           fullWidth
+          sx={{
+            backgroundColor: "var(--select-background-color)",
+            color: "var(--text-color)",
+          }}
         >
           <MenuItem value="JARS">JARS System</MenuItem>
           <MenuItem value="503020">50/30/20 System</MenuItem>
-          <MenuItem value="Zero">Zero-Based Budget</MenuItem>
         </Select>
       </FormControl>
     </>

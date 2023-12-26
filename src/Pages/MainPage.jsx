@@ -9,10 +9,22 @@ const MainPage = () => {
   };
   return (
     <div className="mainPage">
-      <h1>Welcome to the Budgeting System App</h1>
+      <h1>Budgeting System Configurator</h1>
+      <button className="button" onClick={handleGetStarted}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          Get Started
+          <ArrowForward sx={{ paddingLeft: "5px" }} />
+        </div>
+      </button>
       <Grid
         container
-        spacing={1}
+        spacing={2}
         sx={{
           display: "flex",
           flexDirection: "row",
@@ -22,8 +34,8 @@ const MainPage = () => {
         }}
       >
         {BudgetingSystems.map((system, id) => (
-          <Grid item md={3} key={id}>
-            <Card sx={{ minHeight: "500px", minWidth: "300px" }}>
+          <Grid item md={4} key={id}>
+            <Card sx={{ minHeight: "500px", minWidth: "350px" }}>
               <CardContent>
                 <h4>{system.name}</h4>
                 <p>{system.description}</p>
@@ -39,18 +51,6 @@ const MainPage = () => {
           </Grid>
         ))}
       </Grid>
-      <button className="button" onClick={handleGetStarted}>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
-          Get Started
-          <ArrowForward sx={{ paddingLeft: "5px" }} />
-        </div>
-      </button>
     </div>
   );
 };

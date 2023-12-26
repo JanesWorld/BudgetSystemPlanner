@@ -26,7 +26,7 @@ const Header = () => {
         }}
       >
         <span style={{ marginRight: "1rem" }}>
-          {theme === "light" ? "Dark Mode" : "Light Mode"}
+          {theme === "light" ? "Light Mode" : "Dark Mode"}
         </span>
         <ReactSwitch
           onChange={toggleTheme}

@@ -66,12 +66,21 @@ const Budget = () => {
   return (
     <Paper
       elevation={3}
-      sx={{ padding: "2rem", margin: "2rem", borderRadius: "8px" }}
+      sx={{
+        padding: "2rem",
+        margin: "2rem",
+        borderRadius: "8px",
+        backgroundColor: "var(--paper-bg-color)",
+      }}
     >
-      <Typography variant="h4" gutterBottom sx={{ textAlign: "center" }}>
+      <h1 style={{ textAlign: "center", color: "var(--header-color)" }}>
         Budget Planner
-      </Typography>
-      <Typography variant="subtitle1" gutterBottom>
+      </h1>
+      <Typography
+        variant="subtitle1"
+        gutterBottom
+        sx={{ textAlign: "center", color: "var(--text-subtitle-color)" }}
+      >
         Get an automated budget or input your expenses to see how you compare.
       </Typography>
 
@@ -116,7 +125,8 @@ const Budget = () => {
             severity="error"
             sx={{ width: "100%" }}
           >
-            Please enter a valid monthly income before calculating.
+            Please enter your gross (after tax) monthly income before
+            calculating.
           </Alert>
         </Snackbar>
       </Grid>

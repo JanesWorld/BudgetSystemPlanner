@@ -25,7 +25,7 @@ const IncomeInput = ({ onIncomeChange }) => {
 
   return (
     <>
-      <h5>Income Input</h5>
+      <h5 style={{ color: "var(--text-color)" }}>Income Input</h5>
       <FormControl>
         <TextField
           label="Gross Monthly Income"
@@ -36,6 +36,17 @@ const IncomeInput = ({ onIncomeChange }) => {
           helperText={error}
           fullWidth
           variant="outlined"
+          sx={{
+            backgroundColor: "var(--select-background-color)",
+            borderRadius: "5px",
+            color: "var(--text-color)",
+            "& .MuiInputBase-input": {
+              color: "var(--text-color)",
+            },
+            "& label": {
+              color: "var(--text-color)",
+            },
+          }}
         />
       </FormControl>
     </>
