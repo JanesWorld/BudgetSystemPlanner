@@ -35,38 +35,3 @@ export const compareExpensesWithSystem = (
   }
   return comparison;
 };
-
-// export const compareExpensesWithSystem = (
-//   userExpenses,
-//   systemAllocation,
-//   income,
-//   systemPercentages // This is the passed parameter
-// ) => {
-//   let comparison = {};
-
-//   if (!systemAllocation) {
-//     return {};
-//   }
-
-//   for (const [category, systemAmount] of Object.entries(systemAllocation)) {
-//     // Use a different variable name to avoid conflict
-//     const categoryPercentage = systemPercentages[category] * 100;
-
-//     const safeSystemAmount = Number(systemAmount) || 0;
-//     const safeSpentAmount = Number(userExpenses[category]) || 0;
-
-//     const allocatedPercentage = (safeSystemAmount / income) * 100;
-//     const spentPercentage = (safeSpentAmount / income) * 100;
-//     const delta = allocatedPercentage - spentPercentage;
-
-//     comparison[category] = {
-//       allocatedPercentage: allocatedPercentage.toFixed(2),
-//       spentAmount: safeSpentAmount.toFixed(2),
-//       spentPercentage: spentPercentage.toFixed(2),
-//       delta: delta.toFixed(2),
-//       systemPercentages: categoryPercentage.toFixed(2),
-//     };
-//     console.log(`Category: ${category}, Comparison:`, comparison[category]);
-//   }
-//   return comparison;
-// };

@@ -1,17 +1,37 @@
 :root {
   --background-color: #fbfafe;
-  --text-color: #1c1a27;
+  --text-color: black;
+  --text-subtitle-color: black;
   --button-bg-color: #7d5260;
   --button-text-color: white;
   --button-bg-color-hover: #b3261e;
+  --paper-bg-color: #ffffff;
+  --table-header-row: #f2b8b5;
+  --table-data-system: #f2b8b5;
+  --table-header-row-user: #ccc2dc;
+  --table-header-difference: #7d5260;
+  --table-header-advice: #fbfbfe;
+  --header-color: black;
+  --key-bg-color: #fbfafe;
 }
 
 [data-theme="dark"] {
   --background-color: #1c1a27;
-  --text-color: #fbfafe;
-  --button-bg-color: #f2b8b5;
-  --button-bg-color-hover: #973c41;
-  --button-text-color: white;
+  --text-color: white;
+  --text-subtitle-color: white;
+  --button-bg-color: #fdfcfe;
+  --button-bg-color-hover: #ccc2dc;
+  --button-text-color: black;
+  --paper-bg-color: #312f3b;
+  --header-color: white;
+  --select-background-color: #585560;
+  --key-bg-color: #84828b;
+  --table-color: #84828b;
+  --table-header-row: #f2b8b5;
+  --table-data-system: #f2b8b5;
+  --table-header-row-user: #ccc2dc;
+  --table-header-difference: #1c1a27;
+  --table-header-advice: #919097;
 }
 
 .App {
@@ -34,7 +54,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: "20px";
+  padding-bottom: 70px;
 }
 
 .button {
@@ -61,4 +81,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.light {
+  background-color: #fbfafe;
+}
+
+.dark {
+  background-color: #1c1a27;
 }

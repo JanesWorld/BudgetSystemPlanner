@@ -59,52 +59,91 @@ const DisplayResult = () => {
   return (
     <Paper
       elevation={3}
-      sx={{ padding: "2rem", borderRadius: "8px", marginTop: "20px" }}
+      sx={{
+        padding: "2rem",
+        borderRadius: "8px",
+        marginTop: "20px",
+        backgroundColor: "var(--paper-bg-color)",
+      }}
     >
-      <Typography variant="h4" sx={{ mb: "20px" }}>
-        Your Budget based on the {budgetSystemNameMap[budgetMethod]}
+      <Typography variant="h4" sx={{ mb: "20px", color: "var(--text-color)" }}>
+        Your Budget based on the{" "}
+        <span style={{ fontWeight: "bold" }}>
+          {budgetSystemNameMap[budgetMethod]}
+        </span>
       </Typography>
       <KeySystem />
-      <Typography variant="subtitle1" sx={{ mb: "20px", fontWeight: "bold" }}>
+      <Typography
+        variant="subtitle1"
+        sx={{ mb: "20px", fontWeight: "bold", color: "var(--text-color)" }}
+      >
         Monthly Gross Income: £{income}
       </Typography>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <Table
+          sx={{ minWidth: 650, backgroundColor: "var(--table-color)" }}
+          aria-label="simple table"
+        >
           <TableHead>
             <TableRow>
-              <TableCell sx={{ fontWeight: "bold" }}>JARS</TableCell>
-              <TableCell
-                align="right"
-                sx={{ fontWeight: "bold", backgroundColor: "#f2b8b5" }}
-              >
-                JARS System %
+              <TableCell sx={{ fontWeight: "bold" }}>
+                {budgetMethod === "JARS" ? "JARS" : "Category"}
               </TableCell>
               <TableCell
                 align="right"
-                sx={{ fontWeight: "bold", backgroundColor: "#f2b8b5" }}
+                sx={{
+                  fontWeight: "bold",
+                  backgroundColor: "var(--table-header-row)",
+                }}
               >
-                JARS System Budget (£)
+                {budgetMethod === "JARS" ? "JARS System %" : "% Allocation"}
               </TableCell>
               <TableCell
                 align="right"
-                sx={{ fontWeight: "bold", backgroundColor: "#ccc2dc" }}
+                sx={{
+                  fontWeight: "bold",
+                  backgroundColor: "var(--table-header-row)",
+                }}
+              >
+                System Budget (£)
+              </TableCell>
+              <TableCell
+                align="right"
+                sx={{
+                  fontWeight: "bold",
+                  backgroundColor: "var(--table-header-row-user)",
+                }}
               >
                 Current Spend (£)
               </TableCell>
               <TableCell
                 align="right"
-                sx={{ fontWeight: "bold", backgroundColor: "#ccc2dc" }}
+                sx={{
+                  fontWeight: "bold",
+                  backgroundColor: "var(--table-header-row-user)",
+                }}
               >
                 % of Monthly Income
               </TableCell>
               <TableCell
                 align="right"
-                sx={{ fontWeight: "bold", backgroundColor: "#ccc2dc" }}
+                sx={{
+                  fontWeight: "bold",
+                  backgroundColor: "var(--table-header-difference)",
+                  color: "var(--text-color)",
+                }}
               >
                 Difference (£)
               </TableCell>
-              <TableCell align="right" sx={{ fontWeight: "bold" }}>
-                JARS System vs Your Current Budget Delta (%)
+              <TableCell
+                align="center"
+                sx={{
+                  fontWeight: "bold",
+                  backgroundColor: "var(--table-header-advice)",
+                  color: "var(--text-color)",
+                }}
+              >
+                Comment
               </TableCell>
             </TableRow>
           </TableHead>
@@ -112,8 +151,8 @@ const DisplayResult = () => {
             {Object.keys(expenseComparison).map((category) => {
               const categoryKey =
                 category.charAt(0).toUpperCase() + category.slice(1);
-              const jarsSystemPercentage = jarsPercentages[categoryKey] * 100;
-              const jarsSystemBudget = jarsPercentages[categoryKey] * income;
+              const systemPercentage = systemPercentages[categoryKey] * 100;
+              const systemBudget = systemPercentages[categoryKey] * income;
 
               if (!areExpensesEntered) {
                 return (
@@ -121,26 +160,7 @@ const DisplayResult = () => {
                     key={category}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
-                    <TableCell
-                      component="th"
-                      scope="row"
-                      sx={{ fontWeight: "bold" }}
-                    >
-                      {formatName(category)}
-                    </TableCell>
-                    <TableCell
-                      align="right"
-                      sx={{ backgroundColor: "#fef8f8" }}
-                    >
-                      {jarsSystemPercentage.toFixed(0)}%
-                    </TableCell>
-                    <TableCell
-                      align="right"
-                      sx={{ backgroundColor: "#fef8f8" }}
-                    >
-                      £{jarsSystemBudget.toFixed(2)}
-                    </TableCell>
-                    <TableCell align="right" colSpan={4}>
+                    <TableCell colSpan={7} align="center">
                       Expenses not entered
                     </TableCell>
                   </TableRow>
@@ -150,7 +170,7 @@ const DisplayResult = () => {
               const userExpense = parseFloat(
                 categorisedUserExpenses[categoryKey] || 0
               );
-              const deltaValue = jarsSystemBudget - userExpense;
+              const deltaValue = systemBudget - userExpense;
               const { arrow, color } = getArrowAndColor(
                 categoryKey,
                 deltaValue
@@ -168,27 +188,63 @@ const DisplayResult = () => {
                   >
                     {formatName(category)}
                   </TableCell>
-                  <TableCell align="right" sx={{ backgroundColor: "#fef8f8" }}>
-                    {jarsSystemPercentage.toFixed(0)}%
+                  <TableCell
+                    align="right"
+                    sx={{ backgroundColor: "var(--table-data-system)" }}
+                  >
+                    {systemPercentage.toFixed(0)}%
                   </TableCell>
-                  <TableCell align="right" sx={{ backgroundColor: "#fef8f8" }}>
-                    £{jarsSystemBudget.toFixed(2)}
+                  <TableCell
+                    align="right"
+                    sx={{ backgroundColor: "var(--table-data-system)" }}
+                  >
+                    £{systemBudget.toFixed(2)}
                   </TableCell>
-                  <TableCell align="right" sx={{ backgroundColor: "#f0edf5" }}>
+                  <TableCell
+                    align="right"
+                    sx={{
+                      backgroundColor: "var(--table-header-row-user)",
+                    }}
+                  >
                     £{userExpense.toFixed(2)}
                   </TableCell>
-                  <TableCell align="right" sx={{ backgroundColor: "#f0edf5" }}>
+                  <TableCell
+                    align="right"
+                    sx={{
+                      backgroundColor: "var(--table-header-row-user)",
+                    }}
+                  >
                     {((userExpense / income) * 100).toFixed(2)}%
                   </TableCell>
                   <TableCell
                     align="right"
-                    sx={{ backgroundColor: "#f0edf5", color: color }}
+                    sx={{
+                      color: color,
+                      fontWeight: "bold",
+                      fontStyle: "italic",
+                      backgroundColor: "var(--table-header-difference)",
+                      color: "var(--text-color)",
+                    }}
                   >
-                    £{Math.abs(deltaValue).toFixed(2)} {arrow}
+                    {userExpense > systemBudget
+                      ? `(${Math.abs(deltaValue).toFixed(2)})`
+                      : Math.abs(deltaValue).toFixed(2)}{" "}
+                    <Typography
+                      variant="caption"
+                      sx={{ display: "block", mt: 1 }}
+                    >
+                      {userExpense > systemBudget
+                        ? "Over Budget"
+                        : "Under Budget"}
+                    </Typography>
                   </TableCell>
                   <TableCell
-                    align="right"
-                    sx={{ color: deltaValue < 0 ? "red" : "green" }}
+                    align="left"
+                    sx={{
+                      // color: deltaValue < 0 ? "red" : "green",
+                      color: "var(--text-color)",
+                      backgroundColor: "var(--table-header-advice)",
+                    }}
                   >
                     <Typography variant="caption">
                       {getBudgetAdvice(categoryKey, deltaValue < 0)}
