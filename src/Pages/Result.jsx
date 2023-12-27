@@ -132,6 +132,7 @@ const DisplayResult = () => {
             display: "flex",
             alignItems: "center",
             gap: "0.5rem",
+            color: "var(--text-color)",
           }}
         >
           {overBudget ? "You are spending " : "You are saving "}
@@ -241,7 +242,16 @@ const DisplayResult = () => {
                 return (
                   <TableRow
                     key={category}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    sx={{
+                      "&:last-child td, &:last-child th": { border: 0 },
+                      "&:hover": {
+                        backgroundColor: "rgba(25, 118, 210, 0.1)",
+                        ".MuiTableCell-root": {
+                          boxShadow: "inset 0 0 0 2px black",
+                        },
+                        cursor: "pointer",
+                      },
+                    }}
                   >
                     <TableCell
                       component="th"
