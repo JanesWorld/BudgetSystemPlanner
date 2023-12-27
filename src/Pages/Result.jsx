@@ -8,6 +8,7 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  Card,
 } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import { categorizeExpenses } from "../Utils/categoriseExpenses";
@@ -16,6 +17,8 @@ import { jarsPercentages, system503020Percentages } from "../Utils/System_Jars";
 import { compareExpensesWithSystem } from "../Utils/compareExpensesWithJars";
 import { getBudgetAdvice } from "../Utils/getBudgetAdvice";
 import { KeySystem } from "../Components/Key";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 
 const DisplayResult = () => {
   const location = useLocation();
@@ -23,6 +26,25 @@ const DisplayResult = () => {
   const income = parseFloat(sessionStorage.getItem("income"));
   const expenses = JSON.parse(sessionStorage.getItem("expenses") || "{}");
   const categorisedUserExpenses = categorizeExpenses(expenses, budgetMethod);
+
+  const totalExpenses = Object.values(categorisedUserExpenses).reduce(
+    (sum, value) => sum + value,
+    0
+  );
+
+  let spendingColor = "black";
+
+  const expensesMessage =
+    totalExpenses > 0
+      ? totalExpenses > income
+        ? `You are spending £${(totalExpenses - income).toFixed(
+            2
+          )} more than you earn.`
+        : `You are spending less than your income by £${(
+            income - totalExpenses
+          ).toFixed(2)}`
+      : "You've entered no expenses.";
+
   const systemPercentages =
     budgetMethod === "503020" ? system503020Percentages : jarsPercentages;
   const expenseComparison = compareExpensesWithSystem(
@@ -35,6 +57,14 @@ const DisplayResult = () => {
   const budgetSystemNameMap = {
     JARS: "JARS System",
     503020: "50/30/20 System",
+  };
+
+  const delta = totalExpenses - income;
+  const formattedDelta = Math.abs(delta).toFixed(2);
+  const overBudget = delta > 0;
+  const deltaAmountStyle = {
+    color: overBudget ? "red" : "green",
+    fontWeight: "bold",
   };
 
   const getArrowAndColor = (category, delta) => {
@@ -63,6 +93,9 @@ const DisplayResult = () => {
         borderRadius: "8px",
         marginTop: "20px",
         backgroundColor: "var(--paper-bg-color)",
+        display: "flex",
+        flexDirection: "column",
+        gap: "1rem",
       }}
     >
       <Typography variant="h4" sx={{ mb: "20px", color: "var(--text-color)" }}>
@@ -71,13 +104,55 @@ const DisplayResult = () => {
           {budgetSystemNameMap[budgetMethod]}
         </span>
       </Typography>
+
       <KeySystem />
-      <Typography
-        variant="subtitle1"
-        sx={{ mb: "20px", fontWeight: "bold", color: "var(--text-color)" }}
-      >
-        Monthly Gross Income: £{income}
-      </Typography>
+
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        <Typography
+          variant="subtitle1"
+          sx={{ mb: "10px", fontWeight: "bold", color: "var(--text-color)" }}
+        >
+          Monthly Gross Income:{" "}
+          <span style={{ fontWeight: "normal" }}>£{income.toFixed(2)}</span>
+        </Typography>
+        <Typography
+          variant="subtitle1"
+          sx={{ mb: "10px", fontWeight: "bold", color: "var(--text-color)" }}
+        >
+          Total Expenses:{" "}
+          <span style={{ fontWeight: "normal" }}>
+            £{totalExpenses.toFixed(2)}
+          </span>
+        </Typography>
+        <Typography
+          variant="subtitle1"
+          sx={{
+            mb: "20px",
+            fontWeight: "bold",
+            display: "flex",
+            alignItems: "center",
+            gap: "0.5rem",
+          }}
+        >
+          {overBudget ? "You are spending " : "You are saving "}
+          <span style={deltaAmountStyle}>
+            £{formattedDelta}
+            {overBudget ? (
+              <ArrowUpwardIcon
+                style={{ ...deltaAmountStyle, verticalAlign: "middle" }}
+              />
+            ) : (
+              <ArrowDownwardIcon
+                style={{ ...deltaAmountStyle, verticalAlign: "middle" }}
+              />
+            )}
+          </span>
+          {overBudget
+            ? " more than you earn."
+            : " which is less than your income."}
+        </Typography>
+      </div>
+
       <TableContainer component={Paper}>
         <Table
           sx={{ minWidth: 650, backgroundColor: "var(--table-color)" }}

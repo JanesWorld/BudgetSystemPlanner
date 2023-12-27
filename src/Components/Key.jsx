@@ -9,8 +9,6 @@ export const KeySystem = () => {
         p: 2,
         backgroundColor: "var(--key-bg-color)",
         borderRadius: "8px",
-        marginBottom: 2,
-        marginTop: 2,
         width: "40%",
       }}
     >
