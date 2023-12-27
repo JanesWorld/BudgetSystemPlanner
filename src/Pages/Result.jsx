@@ -35,7 +35,6 @@ const DisplayResult = () => {
   const budgetSystemNameMap = {
     JARS: "JARS System",
     503020: "50/30/20 System",
-    Zero: "Zero-Based Budget",
   };
 
   const getArrowAndColor = (category, delta) => {
@@ -148,111 +147,111 @@ const DisplayResult = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {Object.keys(expenseComparison).map((category) => {
-              const categoryKey =
-                category.charAt(0).toUpperCase() + category.slice(1);
-              const systemPercentage = systemPercentages[categoryKey] * 100;
-              const systemBudget = systemPercentages[categoryKey] * income;
+            {Object.keys(expenseComparison).length > 0 ? (
+              Object.keys(expenseComparison).map((category) => {
+                const categoryKey =
+                  category.charAt(0).toUpperCase() + category.slice(1);
+                const systemPercentage = systemPercentages[categoryKey] * 100;
+                const systemBudget = systemPercentages[categoryKey] * income;
 
-              if (!areExpensesEntered) {
+                const userExpense = parseFloat(
+                  categorisedUserExpenses[categoryKey] || 0
+                );
+                const deltaValue = systemBudget - userExpense;
+                const { arrow, color } = getArrowAndColor(
+                  categoryKey,
+                  deltaValue
+                );
+
                 return (
                   <TableRow
                     key={category}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
-                    <TableCell colSpan={7} align="center">
-                      Expenses not entered
+                    <TableCell
+                      component="th"
+                      scope="row"
+                      sx={{ fontWeight: "bold" }}
+                    >
+                      {formatName(category)}
+                    </TableCell>
+                    <TableCell
+                      align="right"
+                      sx={{ backgroundColor: "var(--table-data-system)" }}
+                    >
+                      {systemPercentage.toFixed(0)}%
+                    </TableCell>
+                    <TableCell
+                      align="right"
+                      sx={{ backgroundColor: "var(--table-data-system)" }}
+                    >
+                      £{systemBudget.toFixed(2)}
+                    </TableCell>
+                    <TableCell
+                      align="right"
+                      sx={{
+                        backgroundColor: "var(--table-header-row-user)",
+                      }}
+                    >
+                      £{userExpense.toFixed(2)}
+                    </TableCell>
+                    <TableCell
+                      align="right"
+                      sx={{
+                        backgroundColor: "var(--table-header-row-user)",
+                      }}
+                    >
+                      {((userExpense / income) * 100).toFixed(2)}%
+                    </TableCell>
+                    <TableCell
+                      align="right"
+                      sx={{
+                        color: color,
+                        fontWeight: "bold",
+                        fontStyle: "italic",
+                        backgroundColor: "var(--table-header-difference)",
+                        color: "var(--text-color)",
+                      }}
+                    >
+                      {userExpense > systemBudget
+                        ? `(${Math.abs(deltaValue).toFixed(2)})`
+                        : Math.abs(deltaValue).toFixed(2)}{" "}
+                      <Typography
+                        variant="caption"
+                        sx={{ display: "block", mt: 1 }}
+                      >
+                        {userExpense > systemBudget
+                          ? "Over Budget"
+                          : "Under Budget"}
+                      </Typography>
+                    </TableCell>
+                    <TableCell
+                      align="left"
+                      sx={{
+                        color: "var(--text-color)",
+                        backgroundColor: "var(--table-header-advice)",
+                      }}
+                    >
+                      <Typography variant="caption">
+                        {getBudgetAdvice(
+                          categoryKey,
+                          userExpense,
+                          systemBudget
+                        )}
+                      </Typography>
                     </TableCell>
                   </TableRow>
                 );
-              }
-
-              const userExpense = parseFloat(
-                categorisedUserExpenses[categoryKey] || 0
-              );
-              const deltaValue = systemBudget - userExpense;
-              const { arrow, color } = getArrowAndColor(
-                categoryKey,
-                deltaValue
-              );
-
-              return (
-                <TableRow
-                  key={category}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell
-                    component="th"
-                    scope="row"
-                    sx={{ fontWeight: "bold" }}
-                  >
-                    {formatName(category)}
-                  </TableCell>
-                  <TableCell
-                    align="right"
-                    sx={{ backgroundColor: "var(--table-data-system)" }}
-                  >
-                    {systemPercentage.toFixed(0)}%
-                  </TableCell>
-                  <TableCell
-                    align="right"
-                    sx={{ backgroundColor: "var(--table-data-system)" }}
-                  >
-                    £{systemBudget.toFixed(2)}
-                  </TableCell>
-                  <TableCell
-                    align="right"
-                    sx={{
-                      backgroundColor: "var(--table-header-row-user)",
-                    }}
-                  >
-                    £{userExpense.toFixed(2)}
-                  </TableCell>
-                  <TableCell
-                    align="right"
-                    sx={{
-                      backgroundColor: "var(--table-header-row-user)",
-                    }}
-                  >
-                    {((userExpense / income) * 100).toFixed(2)}%
-                  </TableCell>
-                  <TableCell
-                    align="right"
-                    sx={{
-                      color: color,
-                      fontWeight: "bold",
-                      fontStyle: "italic",
-                      backgroundColor: "var(--table-header-difference)",
-                      color: "var(--text-color)",
-                    }}
-                  >
-                    {userExpense > systemBudget
-                      ? `(${Math.abs(deltaValue).toFixed(2)})`
-                      : Math.abs(deltaValue).toFixed(2)}{" "}
-                    <Typography
-                      variant="caption"
-                      sx={{ display: "block", mt: 1 }}
-                    >
-                      {userExpense > systemBudget
-                        ? "Over Budget"
-                        : "Under Budget"}
-                    </Typography>
-                  </TableCell>
-                  <TableCell
-                    align="left"
-                    sx={{
-                      // color: deltaValue < 0 ? "red" : "green",
-                      color: "var(--text-color)",
-                      backgroundColor: "var(--table-header-advice)",
-                    }}
-                  >
-                    <Typography variant="caption">
-                      {getBudgetAdvice(categoryKey, deltaValue < 0)}
-                    </Typography>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
+              })
+            ) : (
+              <TableRow
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell colSpan={7} align="center">
+                  Expenses not entered
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>
