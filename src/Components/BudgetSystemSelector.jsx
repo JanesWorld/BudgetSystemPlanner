@@ -8,7 +8,6 @@ const BudgetSystemSelector = ({ onBudgetSystemChange }) => {
     const system = event.target.value;
     setSelectedBudget(system);
     onBudgetSystemChange(system);
-    console.log(system);
   };
 
   return (

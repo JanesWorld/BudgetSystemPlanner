@@ -47,12 +47,14 @@ export const calculate503020 = (income) => {
 export const calculateBudget = (method, income, expenses) => {
   console.log("calculateBudget called. Method:", method);
   switch (method) {
-    case "JARS":
+    case "JARS": {
       const jarsAllocation = calculateJARS(income, expenses);
       console.log("JARS Allocation in calculateBudget:", jarsAllocation);
       return jarsAllocation;
-    case "503020":
+    }
+    case "503020": {
       return calculate503020(income);
+    }
     default:
       return {};
   }

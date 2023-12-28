@@ -12,8 +12,6 @@ export const compareExpensesWithSystem = (
   }
 
   for (const [category, systemAmount] of Object.entries(systemAllocation)) {
-    console.log(`Processing category: ${category}`);
-    console.log(`User expenses for ${category}:`, userExpenses[category]);
     const userSpentAmount = userExpenses[category] || 0;
     const systemPercent = systemPercentages[category] * 100;
 
@@ -28,10 +26,6 @@ export const compareExpensesWithSystem = (
       delta: delta.toFixed(2),
       systemPercentages: systemPercent.toFixed(2),
     };
-    console.log(`Category: ${category}, Comparison:`, comparison[category]);
-    console.log("User Expenses in compareExpensesWithSystem:", userExpenses);
-    console.log("System Allocation:", systemAllocation);
-    console.log("System Percentages:", systemPercentages);
   }
   return comparison;
 };

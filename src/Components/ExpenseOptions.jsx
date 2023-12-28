@@ -1,4 +1,4 @@
-import { FormControl, Input, Select, MenuItem } from "@mui/material";
+import { FormControl, Select, MenuItem } from "@mui/material";
 import { useState } from "react";
 
 const ExpenseOption = ({ onOptionChange }) => {

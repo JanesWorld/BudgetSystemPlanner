@@ -4,14 +4,14 @@ import { useState } from "react";
 
 const IncomeInput = ({ onIncomeChange }) => {
   const [error, setError] = useState("");
-  const [income, setIncome] = useState(""); // income is a string, not a number
+  const [income, setIncome] = useState("");
 
   const handleInputChange = (event) => {
-    const value = event.target.value; // we cannot get typeof event because it is an object
+    const value = event.target.value;
     setIncome(value);
     if (/^[0-9]*\.?[0-9]+$/.test(value) || value === "") {
       onIncomeChange(value);
-      setError(""); // Clear any previous error message
+      setError("");
     } else {
       setError("Please enter a valid number");
     }

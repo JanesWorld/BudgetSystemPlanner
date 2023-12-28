@@ -32,30 +32,6 @@ export const BudgetingSystems = [
       { id: "Account 3", name: "Savings", description: "20% of your income" },
     ],
   },
-  // {
-  //   id: "Zero-Based Budgeting System",
-  //   name: "Zero-Based Budgeting System",
-  //   description:
-  //     "Every single £ in your account will be accounted for, with no leftover. The idea is that every single £1 is assigned to an expense. Even if that expense is a savings account. Its typically used by corporations but individuals can benefit as well.",
-  //   system: [
-  //     {
-  //       id: "",
-  //       name: "List Monthly Income",
-  //       description: "50% of your income",
-  //     },
-  //     {
-  //       id: "Account 2",
-  //       name: "List Your Monthly Expenses",
-  //       description: "Every £1 you receive counts.",
-  //     },
-  //     {
-  //       id: "Account 3",
-  //       name: "Subtract Expenses From Income",
-  //       description:
-  //         "This must add up to 0, otherwise you have not accounted for all your expenses",
-  //     },
-  //   ],
-  // },
 ];
 
 export const jarsDescription = {

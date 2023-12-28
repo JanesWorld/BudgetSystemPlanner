@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { Button, Paper, Typography, Grid } from "@mui/material";
+import { Paper, Typography, Grid } from "@mui/material";
 import BudgetSystemSelector from "../Components/BudgetSystemSelector";
 import IncomeInput from "../Components/IncomeInput";
 import ExpenseOption from "../Components/ExpenseOptions";
 import ManualExpenseInput from "../Components/ManualExpenseInput";
 import { useNavigate } from "react-router-dom";
-import { calculateBudget, calculateJARS } from "../Utils/System_Jars";
-import { Snackbar, Alert } from "@mui/material";
+import { calculateBudget } from "../Utils/System_Jars";
 
 const Budget = ({ onBudgetMethodChange }) => {
   const navigate = useNavigate();
@@ -15,7 +14,6 @@ const Budget = ({ onBudgetMethodChange }) => {
   const [income, setIncome] = useState("");
   const [expenses, setExpenses] = useState({});
   const [isIncomeValid, setIsIncomeValid] = useState(false);
-  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
 
   const handleIncomeChange = (value) => {
     setIncome(value);
@@ -27,8 +25,7 @@ const Budget = ({ onBudgetMethodChange }) => {
     onBudgetMethodChange(value);
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSubmit = () => {
     if (isIncomeValid) {
       const budgetAllocation = calculateBudget(
         budgetMethod,
@@ -37,7 +34,6 @@ const Budget = ({ onBudgetMethodChange }) => {
       );
       sessionStorage.setItem("income", income);
       sessionStorage.setItem("expenses", JSON.stringify(expenses));
-
       navigate("/result", {
         state: {
           budgetAllocation,
@@ -46,16 +42,7 @@ const Budget = ({ onBudgetMethodChange }) => {
           budgetMethod,
         },
       });
-    } else {
-      setIsSnackbarOpen(true);
     }
-  };
-
-  const handleSnackBarClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setIsSnackbarOpen(false);
   };
 
   return (
@@ -80,7 +67,6 @@ const Budget = ({ onBudgetMethodChange }) => {
       </Typography>
 
       <Grid container spacing={2}>
-        {/* Left Column */}
         <Grid item xs={12} md={6}>
           <BudgetSystemSelector
             onBudgetSystemChange={handleBudgetMethodChange}
@@ -92,7 +78,6 @@ const Budget = ({ onBudgetMethodChange }) => {
           <Grid item>
             <ExpenseOption onOptionChange={setExpenseOption} />
           </Grid>
-
           {expenseOption === "Manual" && (
             <Grid item xs={12} md={6}>
               <ManualExpenseInput onExpensesInput={setExpenses} />
@@ -110,20 +95,6 @@ const Budget = ({ onBudgetMethodChange }) => {
             Calculate Budget
           </button>
         </Grid>
-        <Snackbar
-          open={isSnackbarOpen}
-          autoHideDuration={6000}
-          onClose={handleSnackBarClose}
-        >
-          <Alert
-            onClose={handleSnackBarClose}
-            severity="error"
-            sx={{ width: "100%" }}
-          >
-            Please enter your gross (after tax) monthly income before
-            calculating.
-          </Alert>
-        </Snackbar>
       </Grid>
     </Paper>
   );

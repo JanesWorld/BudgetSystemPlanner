@@ -8,7 +8,6 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  Card,
 } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import { categorizeExpenses } from "../Utils/categoriseExpenses";
@@ -43,11 +42,6 @@ const DisplayResult = () => {
     ? { color: "red", fontWeight: "bold" }
     : { color: "green", fontWeight: "bold" };
 
-  const neutralStyle = {
-    color: "black",
-    fontWeight: "bold",
-  };
-
   const systemPercentages =
     budgetMethod === "503020" ? system503020Percentages : jarsPercentages;
   const expenseComparison = compareExpensesWithSystem(
@@ -61,24 +55,6 @@ const DisplayResult = () => {
   const budgetSystemNameMap = {
     JARS: "JARS System",
     503020: "50/30/20 System",
-  };
-
-  const getArrowAndColor = (category, delta) => {
-    const isPositiveCategory = [
-      "FinancialFreedom",
-      "Education",
-      "LongTermSavings",
-    ].includes(category);
-    const isOverBudget = delta < 0;
-    const arrow = isOverBudget ? "↓" : "↑";
-    let color = isOverBudget
-      ? isPositiveCategory
-        ? "green"
-        : "red"
-      : isPositiveCategory
-      ? "red"
-      : "green";
-    return { arrow, color };
   };
 
   return (
@@ -232,7 +208,6 @@ const DisplayResult = () => {
                   categorisedUserExpenses[categoryKey] || 0
                 );
                 const deltaValue = systemBudget - userExpense;
-                const { color } = getArrowAndColor(categoryKey, deltaValue);
 
                 if (!categoryMapping[categoryKey]) {
                   console.error(
@@ -311,7 +286,6 @@ const DisplayResult = () => {
                     <TableCell
                       align="right"
                       sx={{
-                        color: color,
                         fontWeight: "bold",
                         fontStyle: "italic",
                         backgroundColor: "var(--table-header-difference)",

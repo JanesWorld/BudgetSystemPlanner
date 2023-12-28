@@ -35,7 +35,5 @@ export const categorizeExpenses = (expenses, budgetMethod) => {
     }
   }
 
-  console.log("Categorized User Expenses:", categorizedExpenses);
-
   return categorizedExpenses;
 };
