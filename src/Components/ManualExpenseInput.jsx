@@ -5,11 +5,15 @@ const ManualExpenseInput = ({ onExpensesInput }) => {
   const [expenses, setExpenses] = useState({
     rent: "",
     bills: "",
-    food: "",
-    entertainment: "",
+    groceries: "",
     transportation: "",
-    miscellaneous: "",
-    other: "",
+    savings: "",
+    education: "",
+    social: "",
+    hobbies: "",
+    entertainment: "",
+    investments: "",
+    charity: "",
   });
 
   const handleInputChange = (event) => {

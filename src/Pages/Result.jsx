@@ -17,8 +17,11 @@ import { jarsPercentages, system503020Percentages } from "../Utils/System_Jars";
 import { compareExpensesWithSystem } from "../Utils/compareExpensesWithJars";
 import { getBudgetAdvice } from "../Utils/getBudgetAdvice";
 import { KeySystem } from "../Components/Key";
+import { useCategoryMapping } from "../CategoryMappingContext";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import InfoIcon from "@mui/icons-material/Info";
+import Tooltip from "@mui/material/Tooltip";
 
 const DisplayResult = () => {
   const location = useLocation();
@@ -26,24 +29,24 @@ const DisplayResult = () => {
   const income = parseFloat(sessionStorage.getItem("income"));
   const expenses = JSON.parse(sessionStorage.getItem("expenses") || "{}");
   const categorisedUserExpenses = categorizeExpenses(expenses, budgetMethod);
-
+  const categoryMapping = useCategoryMapping();
   const totalExpenses = Object.values(categorisedUserExpenses).reduce(
     (sum, value) => sum + value,
     0
   );
 
-  let spendingColor = "black";
+  const overBudget = totalExpenses > income;
+  const exactlyBudgeted = totalExpenses === income;
+  const formattedDelta = Math.abs(totalExpenses - income).toFixed(2);
 
-  const expensesMessage =
-    totalExpenses > 0
-      ? totalExpenses > income
-        ? `You are spending £${(totalExpenses - income).toFixed(
-            2
-          )} more than you earn.`
-        : `You are spending less than your income by £${(
-            income - totalExpenses
-          ).toFixed(2)}`
-      : "You've entered no expenses.";
+  const deltaAmountStyle = overBudget
+    ? { color: "red", fontWeight: "bold" }
+    : { color: "green", fontWeight: "bold" };
+
+  const neutralStyle = {
+    color: "black",
+    fontWeight: "bold",
+  };
 
   const systemPercentages =
     budgetMethod === "503020" ? system503020Percentages : jarsPercentages;
@@ -53,18 +56,11 @@ const DisplayResult = () => {
     income,
     systemPercentages
   );
-  const areExpensesEntered = Object.keys(expenses).length > 0;
+  console.log("Expense Comparison:", expenseComparison);
+
   const budgetSystemNameMap = {
     JARS: "JARS System",
     503020: "50/30/20 System",
-  };
-
-  const delta = totalExpenses - income;
-  const formattedDelta = Math.abs(delta).toFixed(2);
-  const overBudget = delta > 0;
-  const deltaAmountStyle = {
-    color: overBudget ? "red" : "green",
-    fontWeight: "bold",
   };
 
   const getArrowAndColor = (category, delta) => {
@@ -135,22 +131,24 @@ const DisplayResult = () => {
             color: "var(--text-color)",
           }}
         >
-          {overBudget ? "You are spending " : "You are saving "}
-          <span style={deltaAmountStyle}>
-            £{formattedDelta}
-            {overBudget ? (
-              <ArrowUpwardIcon
-                style={{ ...deltaAmountStyle, verticalAlign: "middle" }}
-              />
-            ) : (
-              <ArrowDownwardIcon
-                style={{ ...deltaAmountStyle, verticalAlign: "middle" }}
-              />
-            )}
-          </span>
-          {overBudget
-            ? " more than you earn."
-            : " which is less than your income."}
+          {totalExpenses === 0 ? (
+            "You have not entered any expenses to analyse."
+          ) : exactlyBudgeted ? (
+            "Your expenses are all accounted for."
+          ) : (
+            <>
+              {overBudget ? "You are spending " : "You are saving "}
+              <span style={deltaAmountStyle}>
+                £{formattedDelta}
+                {overBudget ? (
+                  <ArrowUpwardIcon style={{ verticalAlign: "middle" }} />
+                ) : (
+                  <ArrowDownwardIcon style={{ verticalAlign: "middle" }} />
+                )}
+              </span>
+              {overBudget ? "more than you earn." : "less than your income."}
+            </>
+          )}
         </Typography>
       </div>
 
@@ -234,10 +232,14 @@ const DisplayResult = () => {
                   categorisedUserExpenses[categoryKey] || 0
                 );
                 const deltaValue = systemBudget - userExpense;
-                const { arrow, color } = getArrowAndColor(
-                  categoryKey,
-                  deltaValue
-                );
+                const { color } = getArrowAndColor(categoryKey, deltaValue);
+
+                if (!categoryMapping[categoryKey]) {
+                  console.error(
+                    `No category mapping found for key: ${categoryKey}`
+                  );
+                  return null;
+                }
 
                 return (
                   <TableRow
@@ -258,8 +260,26 @@ const DisplayResult = () => {
                       scope="row"
                       sx={{ fontWeight: "bold" }}
                     >
-                      {formatName(category)}
+                      <Tooltip
+                        title={categoryMapping[categoryKey].join(", ")}
+                        placement="top"
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "8px",
+                          }}
+                        >
+                          <InfoIcon
+                            fontSize="small"
+                            style={{ marginBottom: "2px" }}
+                          />
+                          <span>{formatName(categoryKey)}</span>
+                        </div>
+                      </Tooltip>
                     </TableCell>
+
                     <TableCell
                       align="right"
                       sx={{ backgroundColor: "var(--table-data-system)" }}
@@ -298,14 +318,18 @@ const DisplayResult = () => {
                         color: "var(--text-color)",
                       }}
                     >
-                      {userExpense > systemBudget
+                      {userExpense === systemBudget
+                        ? "—"
+                        : userExpense > systemBudget
                         ? `(${Math.abs(deltaValue).toFixed(2)})`
-                        : Math.abs(deltaValue).toFixed(2)}{" "}
+                        : Math.abs(deltaValue).toFixed(2)}
                       <Typography
                         variant="caption"
                         sx={{ display: "block", mt: 1 }}
                       >
-                        {userExpense > systemBudget
+                        {userExpense === systemBudget
+                          ? "On Budget"
+                          : userExpense > systemBudget
                           ? "Over Budget"
                           : "Under Budget"}
                       </Typography>

@@ -8,12 +8,12 @@ export const categorizeExpenses = (expenses, budgetMethod) => {
     categoryMapping = {
       Needs: ["rent", "bills", "groceries", "transportation"],
       Wants: ["entertainment", "social", "hobbies"],
-      Savings: ["savings", "debt", "investments", "education", "charity"],
+      Savings: ["savings", "investments", "education", "charity"],
     };
   } else {
     categoryMapping = {
       Necessities: ["rent", "bills", "groceries", "transportation"],
-      FinancialFreedom: ["debt", "investments"],
+      FinancialFreedom: ["investments"],
       LongTermSavings: ["savings"],
       Education: ["education"],
       Play: ["entertainment", "social", "hobbies"],

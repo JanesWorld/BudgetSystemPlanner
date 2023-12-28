@@ -18,11 +18,11 @@ export const getBudgetAdvice = (category, userExpense, systemBudget) => {
       case "Necessities":
         return "Consider reviewing your essential expenses.";
       case "Play":
-        return "Why not try to find a cheaper alternative for your entertainment?";
+        return "Why not try to find a cheaper alternative for your entertainment? Hiking, maybe?";
       case "Education":
-        return "Consider reviewing your education expenses.";
+        return "Consider reviewing your education expenses. If this is a one off, you can ignore this message.";
       case "LongTermSavings":
-        return "Ensure your debts are paid off before saving.";
+        return "Ensure your debts are paid off before saving. Otherwise, well done on your savings!";
       case "Give":
         return "Consider reviewing your giving expenses.";
       case "FinancialFreedom":
@@ -40,7 +40,7 @@ export const getBudgetAdvice = (category, userExpense, systemBudget) => {
       case "Play":
         return "Life is for living, make sure you enjoy it!";
       case "Education":
-        return "Consider increasing your investment in education.";
+        return "Consider increasing your investment in education. This can mean upskilling, getting certified, or learning a new skill. All could lead to a higher income later on.";
       case "LongTermSavings":
         return "Consider increasing your savings to at least 10% of your income.";
       case "Give":

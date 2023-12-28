@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { calculateBudget, calculateJARS } from "../Utils/System_Jars";
 import { Snackbar, Alert } from "@mui/material";
 
-const Budget = () => {
+const Budget = ({ onBudgetMethodChange }) => {
   const navigate = useNavigate();
   const [budgetMethod, setBudgetMethod] = useState("JARS");
   const [expenseOption, setExpenseOption] = useState("Automated");
@@ -24,6 +24,7 @@ const Budget = () => {
 
   const handleBudgetMethodChange = (value) => {
     setBudgetMethod(value);
+    onBudgetMethodChange(value);
   };
 
   const handleSubmit = (event) => {
@@ -36,14 +37,9 @@ const Budget = () => {
       );
       sessionStorage.setItem("income", income);
       sessionStorage.setItem("expenses", JSON.stringify(expenses));
-      console.log("Selected Budget Method:", budgetMethod);
-      console.log("Calculated Budget Allocation:", budgetAllocation);
-      console.log("Expenses:", expenses);
-      console.log("Income:", income);
 
       navigate("/result", {
         state: {
-          // jarsAllocation,
           budgetAllocation,
           income,
           expenses,
@@ -51,7 +47,6 @@ const Budget = () => {
         },
       });
     } else {
-      console.log("Snackbar Open");
       setIsSnackbarOpen(true);
     }
   };
