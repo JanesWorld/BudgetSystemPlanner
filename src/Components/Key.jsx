@@ -25,7 +25,7 @@ export const KeySystem = () => {
           variant="body2"
           sx={{ color: "var(--text-subtitle-color)" }}
         >
-          JARS System
+          Budget System
         </Typography>
       </Box>
       <Box sx={{ display: "flex", alignItems: "center" }}>
