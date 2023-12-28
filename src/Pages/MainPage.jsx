@@ -2,10 +2,12 @@ import React from "react";
 import { Card, Grid, CardContent } from "@mui/material";
 import { BudgetingSystems } from "../Components/BudgetSystemInfo";
 import ArrowForward from "@mui/icons-material/ArrowForward";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const MainPage = () => {
+  const navigate = useNavigate();
   const handleGetStarted = () => {
-    window.location.href = "/budget";
+    navigate("/budget");
   };
   return (
     <div className="mainPage">
