@@ -2,7 +2,7 @@ import React from "react";
 import { Card, Grid, CardContent } from "@mui/material";
 import { BudgetingSystems } from "../Components/BudgetSystemInfo";
 import ArrowForward from "@mui/icons-material/ArrowForward";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const MainPage = () => {
   const navigate = useNavigate();
