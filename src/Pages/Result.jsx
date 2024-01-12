@@ -21,6 +21,8 @@ import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import InfoIcon from "@mui/icons-material/Info";
 import Tooltip from "@mui/material/Tooltip";
+import { Doughnut } from "react-chartjs-2";
+import "chart.js/auto";
 
 const DisplayResult = () => {
   const location = useLocation();
@@ -57,6 +59,63 @@ const DisplayResult = () => {
     503020: "50/30/20 System",
   };
 
+  const labels = Object.keys(categorisedUserExpenses);
+  const dataPoints = labels.map((label) => categorisedUserExpenses[label]);
+  const chartData = {
+    labels: labels,
+    datasets: [
+      {
+        data: dataPoints,
+        backgroundColor: [
+          "#ff6978",
+          "#e8e9f3",
+          "#b1ede8",
+          "#6d435a",
+          "#352d39",
+          "#2a9d8f",
+        ],
+      },
+    ],
+  };
+
+  const chartOptions = {
+    plugins: {
+      legend: {
+        display: false,
+      },
+    },
+  };
+
+  const chartContainerStyle = {
+    position: "relative",
+    width: "40%",
+    height: "auto",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: "20px",
+    marginRight: "20px",
+  };
+
+  const doghnutCenterText = (
+    <div
+      style={{
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        textAlign: "center",
+      }}
+    >
+      <Typography
+        variant="h6"
+        sx={{ fontWeight: "bold", color: "var(--text-color)" }}
+      >
+        £{totalExpenses.toFixed(2)}
+      </Typography>
+    </div>
+  );
+
   return (
     <Paper
       elevation={3}
@@ -77,55 +136,129 @@ const DisplayResult = () => {
         </span>
       </Typography>
 
-      <KeySystem />
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div style={{ width: "50%" }}>
+          <KeySystem />
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <Typography
+              variant="subtitle1"
+              sx={{
+                mb: "10px",
+                mt: "20px",
+                fontWeight: "bold",
+                color: "var(--text-color)",
+              }}
+            >
+              Monthly Gross Income:{" "}
+              <span style={{ fontWeight: "normal" }}>£{income.toFixed(2)}</span>
+            </Typography>
+            <Typography
+              variant="subtitle1"
+              sx={{
+                mb: "10px",
+                fontWeight: "bold",
+                color: "var(--text-color)",
+              }}
+            >
+              Total Expenses:{" "}
+              <span style={{ fontWeight: "normal" }}>
+                £{totalExpenses.toFixed(2)}
+              </span>
+            </Typography>
+            <Typography
+              variant="subtitle1"
+              sx={{
+                mb: "20px",
+                fontWeight: "bold",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                color: "var(--text-color)",
+              }}
+            >
+              {totalExpenses === 0 ? (
+                "You have not entered any expenses to analyse."
+              ) : exactlyBudgeted ? (
+                "Your expenses are all accounted for."
+              ) : (
+                <>
+                  <Typography variant="body1" fontWeight="bold">
+                    You are spending
+                  </Typography>
+                  <span style={deltaAmountStyle}>
+                    £{formattedDelta}
+                    {overBudget ? (
+                      <ArrowUpwardIcon style={{ verticalAlign: "middle" }} />
+                    ) : (
+                      <ArrowDownwardIcon style={{ verticalAlign: "middle" }} />
+                    )}
+                  </span>
+                  {overBudget
+                    ? "more than you earn."
+                    : "less than your income."}
+                </>
+              )}
+            </Typography>
+          </div>
+        </div>
 
-      <div style={{ display: "flex", flexDirection: "column" }}>
-        <Typography
-          variant="subtitle1"
-          sx={{ mb: "10px", fontWeight: "bold", color: "var(--text-color)" }}
-        >
-          Monthly Gross Income:{" "}
-          <span style={{ fontWeight: "normal" }}>£{income.toFixed(2)}</span>
-        </Typography>
-        <Typography
-          variant="subtitle1"
-          sx={{ mb: "10px", fontWeight: "bold", color: "var(--text-color)" }}
-        >
-          Total Expenses:{" "}
-          <span style={{ fontWeight: "normal" }}>
-            £{totalExpenses.toFixed(2)}
-          </span>
-        </Typography>
-        <Typography
-          variant="subtitle1"
-          sx={{
-            mb: "20px",
-            fontWeight: "bold",
+        <div
+          style={{
+            width: "calc(2 / 3 * 100%)",
             display: "flex",
-            alignItems: "center",
-            gap: "0.5rem",
-            color: "var(--text-color)",
+            justifyContent: "center",
+            alignItems: "flex-start",
           }}
         >
-          {totalExpenses === 0 ? (
-            "You have not entered any expenses to analyse."
-          ) : exactlyBudgeted ? (
-            "Your expenses are all accounted for."
-          ) : (
-            <>
-              {overBudget ? "You are spending " : "You are saving "}
-              <span style={deltaAmountStyle}>
-                £{formattedDelta}
-                {overBudget ? (
-                  <ArrowUpwardIcon style={{ verticalAlign: "middle" }} />
-                ) : (
-                  <ArrowDownwardIcon style={{ verticalAlign: "middle" }} />
-                )}
-              </span>
-              {overBudget ? "more than you earn." : "less than your income."}
-            </>
-          )}
-        </Typography>
+          <div style={chartContainerStyle}>
+            <Doughnut data={chartData} options={chartOptions} />
+            {doghnutCenterText}
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+              paddingLeft: "20px",
+              justifyContent: "center",
+              gap: "0.5rem",
+            }}
+          >
+            {chartData.labels.map((label, index) => (
+              <div
+                key={index}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  marginTop: "0.5rem",
+                }}
+              >
+                <span
+                  style={{
+                    height: "15px",
+                    width: "15px",
+                    display: "inline-block",
+                    backgroundColor:
+                      chartData.datasets[0].backgroundColor[index],
+                    borderRadius: "50%",
+                  }}
+                ></span>
+                <Typography
+                  variant="body2"
+                  style={{
+                    textAlign: "left",
+                    color: "var(--text-color)",
+                    fontSize: "1rem",
+                  }}
+                >
+                  {label}
+                </Typography>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
       <TableContainer component={Paper}>

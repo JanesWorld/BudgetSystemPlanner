@@ -9,7 +9,7 @@ export const KeySystem = () => {
         p: 2,
         backgroundColor: "var(--key-bg-color)",
         borderRadius: "8px",
-        width: "40%",
+        width: "62%",
       }}
     >
       <Box sx={{ display: "flex", alignItems: "center", marginRight: 4 }}>
